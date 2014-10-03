@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html ng-app="visualSSH">
+
+	<head>
+    	<meta charset="utf-8">
+		<title>Visual SSH</title>
+		<!--Our Own StyleSheet-->
+		<link rel='stylesheet' href='./resource/css/stylesheet.css'/>
+		<!--JQuery JavaScript File-->
+		<script src="./resource/lib/jquery-2.1.1.min.js"></script>
+        <!--AngularJS JavaScript File-->
+		<script src="./resource/lib/angular.min.js"></script>
+
+	</head>
+
+	<body ng-controller="infoCtrl">
+
+        <div>
+            <p>Host: <input type="text" ng-model="host" value="cory.eecs.berkeley.edu"></p>
+            <p>Username: <input type="text" ng-model="user" value="cs61a-xxx"></p>
+            <p>Password: <input type="password" ng-model="pass" value=""></p>
+            <input type="button" ng-click="setConnection()" value="connect">
+        </div>
+
+        <div>
+            <p ng-repeat="str in data" ng-click="open(str)">{{str}}</p>
+        </div>
+
+        <div>
+            <p ng-bind="executions"></p>
+            <p ng-bind="file"></p>
+        </div>
+
+		<!--Our Own JavaScript File-->
+		<script src="./resource/js/app.js"></script>
+
+	</body>
+
+</html>
