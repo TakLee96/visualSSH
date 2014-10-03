@@ -5,10 +5,14 @@
 	<head>
     	<meta charset="utf-8">
 		<title>Visual SSH</title>
-		<!--Our Own StyleSheet-->
+        <!--Our Own StyleSheet-->
 		<link rel='stylesheet' href='./resource/css/stylesheet.css'/>
 		<!--JQuery JavaScript File-->
 		<script src="./resource/lib/jquery-2.1.1.min.js"></script>
+        <!--JQuery UI StyleSheet-->
+        <link rel='stylesheet' href='./resource/lib/jquery-ui-1.11.1.custom/jquery-ui.css'/>
+        <!--JQuery UI JavaScript File-->
+        <script src='./resource/lib/jquery-ui-1.11.1.custom/jquery-ui.js'></script>
         <!--AngularJS JavaScript File-->
 		<script src="./resource/lib/angular.min.js"></script>
 
@@ -16,21 +20,28 @@
 
 	<body ng-controller="infoCtrl">
 
-        <div>
+        <p>
             <p>Host: <input type="text" ng-model="host" value="cory.eecs.berkeley.edu"></p>
             <p>Username: <input type="text" ng-model="user" value="cs61a-xxx"></p>
             <p>Password: <input type="password" ng-model="pass" value=""></p>
-            <input type="button" ng-click="setConnection()" value="connect">
-        </div>
+            <button class="button" ng-click="setConnection()">connect</button>
+        </p>
 
-        <div>
-            <p ng-repeat="str in data" ng-click="open(str)">{{str}}</p>
-        </div>
+        <p>
+            <button ng-click="glookup('')" class="button" ng-show="connected">glookup</button>
+            <button ng-click="glookup(' -t')" class="button" ng-show="connected">glookup -t</button>
+        </p>
 
-        <div>
-            <p ng-bind="executions"></p>
-            <p ng-bind="file"></p>
-        </div>
+        <p id="display">
+            <div id="dataProgressbar" style="width: 50%"></div>
+            <button ng-click="goBack()" class="button" ng-show="canGoBack">Back</button>
+            <button ng-repeat="str in data" ng-click="open(str)" class="button">{{str}}</button>
+        </p>
+
+        <p>
+            <div id="fileProgressbar" style="width: 50%"></div>
+            <p ng-repeat="sentence in file track by $index">{{sentence}}</p>
+        </p>
 
 		<!--Our Own JavaScript File-->
 		<script src="./resource/js/app.js"></script>
