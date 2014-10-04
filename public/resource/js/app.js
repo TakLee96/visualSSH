@@ -163,11 +163,5 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         $('.button').button();
         //$('#fileTag').css('border', '1px solid black');
     }, 10);
-
-    $(document).ready(function() {
-        $('#auto-complete').autocomplete({
-            source: ['cory.eecs.berkeley.edu']
-        });
-    });
 }]);
 
