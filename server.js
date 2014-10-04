@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //Server Listening to Port
-var server = app.listen(4000, function(){
+var server = app.listen((process.env.PORT || 5000), function(){
     console.log("server is running at %s", server.address().port);
 });
 
