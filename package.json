@@ -5,17 +5,17 @@
   "description": "A starter project for AngularJS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular/angular-seed"
+    "url": "https://github.com/TakLee96/visualSSH"
   },
-  "license": "#12344567890",
+  "license": "#1234567890",
   "devDependencies": {},
   "scripts": {
     "start": "node server.js"
   },
   "bugs": {
-    "url": "https://github.com/angular/angular-seed/issues"
+    "url": "https://github.com/TakLee96/visualSSH/issues"
   },
-  "homepage": "https://github.com/angular/angular-seed",
+  "homepage": "https://github.com/TakLee96/visualSSH",
   "main": "./public/index.html",
   "dependencies": {
     "body-parser": "^1.9.0",
