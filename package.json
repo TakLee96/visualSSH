@@ -10,7 +10,7 @@
   "license": "#12344567890",
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "bugs": {
     "url": "https://github.com/angular/angular-seed/issues"
