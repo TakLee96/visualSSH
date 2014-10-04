@@ -19,7 +19,11 @@ var execute = function(req, res) {
     var command = req.params.command.replace("%20", " ").replace("%2F", "/");
     console.log("[Server] Executing %s", command);
     model.executeCommand(command, function(data){
-        res.status(200).end(data);
+        if (data) {
+            res.status(200).end(data);
+        } else {
+            res.status(400).end("[Server] Connection Error");
+        }
     });
 };
 

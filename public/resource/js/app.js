@@ -12,29 +12,38 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
     $scope.file = "";
     $scope.canGoBack = false;
     $scope.connected = false;
+    $scope.showFile = false;
+    $scope.fileName = "";
 
     var history = [];
     var _dir = "";
     $scope.executions = 0;
 
-    $scope.setConnection = function(callback) {
-//        var my_url = '/connect/' + $scope.host;
-//        my_url += '/' + $scope.user;
-//        my_url += '/' + $scope.pass;
+    $scope.setConnection = function(callback, option, noRefresh) {
+        var my_url = '/connect/' + $scope.host;
+        my_url += '/' + $scope.user;
+        my_url += '/' + $scope.pass;
 
-        var my_url = '/connect/' + "cory.eecs.berkeley.edu";
-        my_url += '/' + "cs61a-ayc";
-        my_url += '/' + "Tak960624";
-
-        $scope.data = ["Loading..."];
-        progressBar('data');
+        if (!noRefresh) {
+            $scope.data = ["Loading..."];
+            progressBar('data');
+        }
 
         $http.get(my_url).success(function(data) {
-            console.log(data);
+            //console.log(data);
             callback = (callback) ? callback : displayData;
             $scope.connected = true;
 
-            callback();
+            if (option) {
+                callback(option)
+            } else {
+                callback();
+            }
+        }).error(function (data, status, headers, config) {
+            $scope.connected = false;
+            alert("%s %s %s %s", data, status, headers, config);
+            console.log("I got called");
+            console.log("%s %s %s %s", data, status, headers, config);
         });
     };
 
@@ -57,6 +66,14 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         }, 100, 10);
     };
 
+    var replaceAll = function(str, before, after) {
+        if (str.indexOf(before) == -1) {
+            return str;
+        } else {
+            return replaceAll(str.replace(before, after), before, after);
+        }
+    };
+
     var displayData = function() {
         if ($scope.executions >= 2) {
             $scope.setConnection();
@@ -75,15 +92,15 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
 
     var readFile = function() {
         if ($scope.executions >= 2) {
-            $scope.setConnection(readFile);
+            $scope.setConnection(readFile, null, true);
             $scope.executions = 0;
         } else {
-            $scope.file = ["Loading..."];
+            $scope.showFile = true;
+            $scope.file = "Loading...";
             progressBar('file');
             $scope.executions++;
-            $http.get('/command/' + 'cat' + _dir.substr(0, _dir.length - 3)).success(function (data) {
-                console.log(data);
-                $scope.file = data.split("\n");
+            $http.get('/command/' + 'cat' + _dir).success(function (data) {
+                $scope.file = data;
             });
         }
     };
@@ -94,35 +111,63 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         _dir = history.pop();
         console.log(history);
         $scope.file = "";
+        $scope.showFile = false;
         displayData();
     };
 
     $scope.open = function(name) {
-        if (_dir) {
-            _dir += name + "%2F";
-        } else {
-            _dir += " " + name + "%2F";
-        }
         if (name.indexOf(".") == -1) {
             history.push(_dir);
-            console.log(history);
+            if (_dir) {
+                _dir += name + "%2F";
+            } else {
+                _dir += " " + name + "%2F";
+            }
+            console.log("%s %s", history, _dir);
+            $scope.file = "";
+            $scope.showFile = false;
             $scope.canGoBack = true;
             displayData();
         } else {
+            if (_dir.indexOf(name) == -1) {
+                _dir += name;
+            } else {
+                _dir = _dir
+            }
+            $scope.fileName = name;
             readFile();
         }
     };
 
     $scope.glookup = function(options) {
-        progressBar('file');
-        $scope.file = ["Loading..."];
-        $http.get('/command/' + 'glookup' + options).success(function (data) {
-            $scope.file = data.split("\n");
-        });
+        if ($scope.executions >= 2) {
+            $scope.setConnection($scope.glookup, options, true);
+            $scope.executions = 0;
+        } else {
+            $scope.showFile = true;
+            $scope.executions++;
+            progressBar('file');
+            $scope.file = ["Loading..."];
+            options = (options) ? options : "";
+            $http.get('/command/' + 'glookup' + options).success(function (data) {
+                $scope.file = data;
+            });
+        }
+    };
+
+    $scope.exit = function() {
+        location.reload();
     };
 
     $interval(function() {
         $('.button').button();
+        //$('#fileTag').css('border', '1px solid black');
     }, 10);
+
+    $(document).ready(function() {
+        $('#auto-complete').autocomplete({
+            source: ['cory.eecs.berkeley.edu']
+        });
+    });
 }]);
 

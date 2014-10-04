@@ -20,28 +20,33 @@
 
 	<body ng-controller="infoCtrl">
 
-        <p>
-            <p>Host: <input type="text" ng-model="host" value="cory.eecs.berkeley.edu"></p>
-            <p>Username: <input type="text" ng-model="user" value="cs61a-xxx"></p>
-            <p>Password: <input type="password" ng-model="pass" value=""></p>
+        <div ng-hide="connected">
+            <p>Host: <input type="text" ng-model="host" id="auto-complete"/> </p>
+            <p>Username: <input type="text" ng-model="user"/> </p>
+            <p>Password: <input type="password" ng-model="pass"/> </p>
             <button class="button" ng-click="setConnection()">connect</button>
-        </p>
+        </div>
 
-        <p>
+        <div ng-show="connected">
+            <h1>Special Commands:</h1>
             <button ng-click="glookup('')" class="button" ng-show="connected">glookup</button>
             <button ng-click="glookup(' -t')" class="button" ng-show="connected">glookup -t</button>
-        </p>
+            <button ng-click="exit()" class="button">exit</button>
+            <hr/>
+        </div>
 
-        <p id="display">
-            <div id="dataProgressbar" style="width: 50%"></div>
+        <div id="display" ng-show="connected">
+            <h1>Your Folders:</h1>
+            <div id="dataProgressbar"></div>
             <button ng-click="goBack()" class="button" ng-show="canGoBack">Back</button>
             <button ng-repeat="str in data" ng-click="open(str)" class="button">{{str}}</button>
-        </p>
+        </div>
 
-        <p>
-            <div id="fileProgressbar" style="width: 50%"></div>
-            <p ng-repeat="sentence in file track by $index">{{sentence}}</p>
-        </p>
+        <div id="fileTag" ng-show="showFile && connected" class="ui-state-highlight ui-corner-all">
+            <h1 ng-bind="fileName"></h1>
+            <div id="fileProgressbar"></div>
+            <textarea ng-bind="file" readonly="readonly"></textarea>
+        </div>
 
 		<!--Our Own JavaScript File-->
 		<script src="./resource/js/app.js"></script>

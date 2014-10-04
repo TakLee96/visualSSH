@@ -1,0 +1,25 @@
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    width: 100%;
+    resize: none;
+    height: 500px
+}
+
+#fileTag {
+    font: 12pt Monaco, Monospace;
+    height: 80%;
+    padding: 5%;
+    text-align: left
+}
+
+body {
+    margin: auto;
+    width: 50%;
+    border: 1px solid black;
+    text-align: center
+}
+
+input {
+    width: 30%
+}

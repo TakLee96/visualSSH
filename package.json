@@ -1,0 +1,29 @@
+{
+  "name": "visualSSH",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A starter project for AngularJS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angular/angular-seed"
+  },
+  "license": "#12344567890",
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/angular/angular-seed/issues"
+  },
+  "homepage": "https://github.com/angular/angular-seed",
+  "main": "./public/index.html",
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "express": "^4.9.5",
+    "simple-ssh": "^0.7.4"
+  },
+  "keywords": [
+    "visualSSH"
+  ],
+  "author": "TakLee96"
+}
