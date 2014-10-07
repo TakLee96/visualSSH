@@ -5,9 +5,6 @@
 var visualSSH = angular.module('visualSSH', []);
 
 visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
-    $scope.host = "";
-    $scope.user = "";
-    $scope.pass = "";
     $scope.data = [];
     $scope.file = "";
     $scope.canGoBack = false;
@@ -74,9 +71,9 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
 
     $scope.executions = 0;
     $scope.setConnection = function(callback, option, noRefresh) {
-        var my_url = '/connect/' + $('host').val();
-        my_url += '/' + $('user').val();
-        my_url += '/' + $('pass').val();
+        var my_url = '/connect/' + $('#host').val();
+        my_url += '/' + $('#user').val();
+        my_url += '/' + $('#pass').val();
 
         console.log("Sending request to %s", my_url);
         if (!noRefresh) {
