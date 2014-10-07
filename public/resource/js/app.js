@@ -75,7 +75,6 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         my_url += '/' + $('#user').val();
         my_url += '/' + $('#pass').val();
 
-        console.log("Sending request to %s", my_url);
         if (!noRefresh) {
             $scope.data = ["Loading..."];
             progressBar('data');
