@@ -147,7 +147,7 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
     $('#host').autocomplete({
         source: ["cory.eecs.berkeley.edu"]
     });
-    $('#username').autocomplete({
+    $('#user').autocomplete({
         source: [
             "cs61a-",
             "cs61b-",
@@ -155,17 +155,8 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             "cs70-"
         ]
     });
-    $('.button').button();
-    $scope.$watch(
-        function() {
-            return $scope.data;
-        },
-        function(newValue, oldValue) {
-            if ( newValue !== oldValue ) {
-                $('.button').button();
-            }
-        }
-    );
-
+    $interval(function() {
+        $('.button').button();
+    }, 25)
 }]);
 
