@@ -54,9 +54,6 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
                 data = data.split("\n");
                 data.pop();
                 $scope.data = data;
-                $scope.$apply(function() {
-                    $('.button').button();
-                });
             });
         }
     };
@@ -71,20 +68,17 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             $scope.executions++;
             $http.get('/command/' + 'cat' + _dir).success(function (data) {
                 $scope.file = data;
-                $scope.$apply(function() {
-                    $('.button').button();
-                });
             });
         }
     };
 
     $scope.executions = 0;
     $scope.setConnection = function(callback, option, noRefresh) {
-        $scope.$apply();
-        var my_url = '/connect/' + $scope.host;
-        my_url += '/' + $scope.user;
-        my_url += '/' + $scope.pass;
+        var my_url = '/connect/' + $('host').val();
+        my_url += '/' + $('user').val();
+        my_url += '/' + $('pass').val();
 
+        console.log("Sending request to %s", my_url);
         if (!noRefresh) {
             $scope.data = ["Loading..."];
             progressBar('data');
@@ -164,5 +158,17 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             "cs70-"
         ]
     });
+    $('.button').button();
+    $scope.$watch(
+        function() {
+            return $scope.data;
+        },
+        function(newValue, oldValue) {
+            if ( newValue !== oldValue ) {
+                $('.button').button();
+            }
+        }
+    );
+
 }]);
 
