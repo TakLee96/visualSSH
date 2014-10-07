@@ -17,9 +17,70 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
 
     var history = [];
     var _dir = "";
-    $scope.executions = 0;
+    var progressBar = function(str) {
+        var value = 0;
+        var fadeIn = false;
+        $interval(function() {
+            value += 10;
+            if (!fadeIn) {
+                $('#' + str + 'Progressbar').fadeIn(0);
+                fadeIn = true;
+            }
+            if (value == 100) {
+                $('#' + str + 'Progressbar').fadeOut(500);
+                fadeIn = false;
+            }
+            $('#' + str + 'Progressbar').progressbar({
+                value: value
+            });
+        }, 100, 10);
+    };
+    var replaceAll = function(str, before, after) {
+        if (str.indexOf(before) == -1) {
+            return str;
+        } else {
+            return replaceAll(str.replace(before, after), before, after);
+        }
+    };
+    var displayData = function() {
+        if ($scope.executions >= 2) {
+            $scope.setConnection();
+            $scope.executions = 0;
+        } else {
+            progressBar('data');
+            $scope.data = ["Loading"];
+            $scope.executions++;
+            $http.get('/command/' + 'ls' + _dir).success(function (data) {
+                data = data.split("\n");
+                data.pop();
+                $scope.data = data;
+                $scope.$apply(function() {
+                    $('.button').button();
+                });
+            });
+        }
+    };
+    var readFile = function() {
+        if ($scope.executions >= 2) {
+            $scope.setConnection(readFile, null, true);
+            $scope.executions = 0;
+        } else {
+            $scope.showFile = true;
+            $scope.file = "Loading...";
+            progressBar('file');
+            $scope.executions++;
+            $http.get('/command/' + 'cat' + _dir).success(function (data) {
+                $scope.file = data;
+                $scope.$apply(function() {
+                    $('.button').button();
+                });
+            });
+        }
+    };
 
+    $scope.executions = 0;
     $scope.setConnection = function(callback, option, noRefresh) {
+        $scope.$apply();
         var my_url = '/connect/' + $scope.host;
         my_url += '/' + $scope.user;
         my_url += '/' + $scope.pass;
@@ -39,72 +100,8 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             } else {
                 callback();
             }
-        }).error(function (data, status, headers, config) {
-            $scope.connected = false;
-            alert("%s %s %s %s", data, status, headers, config);
-            console.log("I got called");
-            console.log("%s %s %s %s", data, status, headers, config);
         });
     };
-
-    var progressBar = function(str) {
-        var value = 0;
-        var fadeIn = false;
-        $interval(function() {
-            value += 10;
-            if (!fadeIn) {
-                $('#' + str + 'Progressbar').fadeIn(0);
-                fadeIn = true;
-            }
-            if (value == 100) {
-                $('#' + str + 'Progressbar').fadeOut(500);
-                fadeIn = false;
-            }
-            $('#' + str + 'Progressbar').progressbar({
-                value: value
-            });
-        }, 100, 10);
-    };
-
-    var replaceAll = function(str, before, after) {
-        if (str.indexOf(before) == -1) {
-            return str;
-        } else {
-            return replaceAll(str.replace(before, after), before, after);
-        }
-    };
-
-    var displayData = function() {
-        if ($scope.executions >= 2) {
-            $scope.setConnection();
-            $scope.executions = 0;
-        } else {
-            progressBar('data');
-            $scope.data = ["Loading"];
-            $scope.executions++;
-            $http.get('/command/' + 'ls' + _dir).success(function (data) {
-                data = data.split("\n");
-                data.pop();
-                $scope.data = data;
-            });
-        }
-    };
-
-    var readFile = function() {
-        if ($scope.executions >= 2) {
-            $scope.setConnection(readFile, null, true);
-            $scope.executions = 0;
-        } else {
-            $scope.showFile = true;
-            $scope.file = "Loading...";
-            progressBar('file');
-            $scope.executions++;
-            $http.get('/command/' + 'cat' + _dir).success(function (data) {
-                $scope.file = data;
-            });
-        }
-    };
-
     $scope.goBack = function() {
         if (history.length == 1)
             $scope.canGoBack = false;
@@ -114,7 +111,6 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         $scope.showFile = false;
         displayData();
     };
-
     $scope.open = function(name) {
         if (name.indexOf(".") == -1) {
             history.push(_dir);
@@ -129,16 +125,15 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             $scope.canGoBack = true;
             displayData();
         } else {
-            if (_dir.indexOf(name) == -1) {
+            if (_dir == "") {
+                _dir = " " + name;
+            } else if (_dir.indexOf(name) == -1) {
                 _dir += name;
-            } else {
-                _dir = _dir
             }
             $scope.fileName = name;
             readFile();
         }
     };
-
     $scope.glookup = function(options) {
         if ($scope.executions >= 2) {
             $scope.setConnection($scope.glookup, options, true);
@@ -154,14 +149,20 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             });
         }
     };
-
     $scope.exit = function() {
         location.reload();
     };
 
-    $interval(function() {
-        $('.button').button();
-        //$('#fileTag').css('border', '1px solid black');
-    }, 10);
+    $('#host').autocomplete({
+        source: ["cory.eecs.berkeley.edu"]
+    });
+    $('#username').autocomplete({
+        source: [
+            "cs61a-",
+            "cs61b-",
+            "cs61c-",
+            "cs70-"
+        ]
+    });
 }]);
 

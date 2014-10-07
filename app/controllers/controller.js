@@ -22,7 +22,7 @@ var execute = function(req, res) {
         if (data) {
             res.status(200).end(data);
         } else {
-            res.status(400).end("[Server] Connection Error");
+            res.status(400).end();
         }
     });
 };
