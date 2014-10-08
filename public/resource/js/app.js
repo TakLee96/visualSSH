@@ -11,6 +11,7 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
     $scope.connected = false;
     $scope.showFile = false;
     $scope.fileName = "";
+    $scope.executions = 0;
 
     var history = [];
     var _dir = "";
@@ -69,7 +70,6 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         }
     };
 
-    $scope.executions = 0;
     $scope.setConnection = function(callback, option, noRefresh) {
         var my_url = '/connect/' + $('#host').val();
         my_url += '/' + $('#user').val();
@@ -117,6 +117,12 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
         } else {
             if (_dir == "") {
                 _dir = " " + name;
+            } else if (_dir.indexOf('.') != -1) {
+                if (_dir.lastIndexOf('%2F') == -1) {
+                    _dir = " " + name
+                } else {
+                    _dir = _dir.substring(0, _dir.lastIndexOf('%2F')) + name;
+                }
             } else if (_dir.indexOf(name) == -1) {
                 _dir += name;
             }
