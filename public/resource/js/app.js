@@ -121,7 +121,7 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
                 if (_dir.lastIndexOf('%2F') == -1) {
                     _dir = " " + name
                 } else {
-                    _dir = _dir.substring(0, _dir.lastIndexOf('%2F')) + name;
+                    _dir = _dir.substring(0, _dir.lastIndexOf('%2F') + 1) + name;
                 }
             } else if (_dir.indexOf(name) == -1) {
                 _dir += name;
