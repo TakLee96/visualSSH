@@ -5,17 +5,9 @@
 	<head>
     	<meta charset="utf-8">
 		<title>Visual SSH</title>
-        <!--Our Own StyleSheet-->
-		<link rel='stylesheet' href='./resource/css/stylesheet.css'/>
-		<!--JQuery JavaScript File-->
 		<script src="./resource/lib/jquery-2.1.1.min.js"></script>
-        <!--JQuery UI StyleSheet-->
         <link rel='stylesheet' href='./resource/lib/jquery-ui-1.11.1.custom/jquery-ui.css'/>
-        <!--JQuery UI JavaScript File-->
-        <script src='./resource/lib/jquery-ui-1.11.1.custom/jquery-ui.js'></script>
-        <!--AngularJS JavaScript File-->
-		<script src="./resource/lib/angular.min.js"></script>
-
+        <link rel='stylesheet' href='./resource/css/stylesheet.css'/>
 	</head>
 
 	<body ng-controller="infoCtrl">
@@ -29,11 +21,14 @@
 
         <div ng-show="connected">
             <h1>Special Commands:</h1>
-            <button ng-click="glookup('')" class="button" ng-show="connected">glookup</button>
-            <button ng-click="glookup(' -t')" class="button" ng-show="connected">glookup -t</button>
+            <button ng-click="initDropzone()" class="button">upload</button>
+            <button ng-click="glookup('')" class="button">glookup</button>
+            <button ng-click="glookup(' -t')" class="button">glookup -t</button>
             <button ng-click="exit()" class="button">exit</button>
             <hr/>
         </div>
+
+        <div ng-show="upload" id="upload"></div>
 
         <div id="display" ng-show="connected">
             <h1>Your Folders:</h1>
@@ -48,9 +43,10 @@
             <textarea ng-bind="file" readonly="readonly"></textarea>
         </div>
 
-		<!--Our Own JavaScript File-->
+        <script src='./resource/lib/jquery-ui-1.11.1.custom/jquery-ui.js'></script>
+        <script src="resource/lib/dropzone.js"></script>
+        <script src="./resource/lib/angular.min.js"></script>
 		<script src="./resource/js/app.js"></script>
-
 	</body>
 
 </html>

@@ -47,9 +47,14 @@ var executeCommand = function(command, callback) {
     });
 };
 
+var uploadFile = function () {
+    // TODO: finish up this function
+};
+
 module.exports = {
     connectSSH: connectSSH,
-    executeCommand: executeCommand
+    executeCommand: executeCommand,
+    uploadFile: uploadFile
 };
 
 

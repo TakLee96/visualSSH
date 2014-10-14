@@ -27,7 +27,13 @@ var execute = function(req, res) {
     });
 };
 
+var upload = function() {
+    // TODO: finish up this function
+    model.uploadFile();
+};
+
 module.exports = {
     connect: connect,
-    execute: execute
+    execute: execute,
+    upload: upload
 };

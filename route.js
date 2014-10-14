@@ -8,4 +8,6 @@ module.exports = function(app) {
     app.get("/connect/:host/:user/:pass", controller.connect);
 
     app.get("/command/:command", controller.execute);
+
+    app.post("/fileupload", controller.upload);
 };

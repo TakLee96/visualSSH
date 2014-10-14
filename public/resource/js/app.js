@@ -6,10 +6,11 @@ var visualSSH = angular.module('visualSSH', []);
 
 visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
     $scope.data = [];
-    $scope.file = "";
     $scope.canGoBack = false;
     $scope.connected = false;
     $scope.showFile = false;
+    $scope.upload = false;
+    $scope.file = "";
     $scope.fileName = "";
     $scope.executions = 0;
 
@@ -148,6 +149,9 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
     $scope.exit = function() {
         location.reload();
     };
+    $scope.initDropzone = function() {
+        $scope.upload = true;
+    };
 
     $('#host').autocomplete({
         source: ["cory.eecs.berkeley.edu"]
@@ -160,8 +164,9 @@ visualSSH.controller('infoCtrl', ['$scope', '$http', '$interval', function($scop
             "cs70-"
         ]
     });
+    var myDropzone = new Dropzone("div#upload", { url: "/fileupload"});
     $interval(function() {
         $('.button').button();
-    }, 25)
+    }, 25);
 }]);
 
